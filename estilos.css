@@ -1,0 +1,30 @@
+header{
+    background-color: red;
+}
+nav{
+    background-color: #AC1416 !important;
+}
+#inputWrapper{
+    margin-top: 20pt;
+}
+#imageWrapper{
+    position:relative;
+}
+
+#imageWrapper a{
+    background-color: #F5BB00;
+
+    position:absolute;
+    bottom:20px;
+    right:40px;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    
+    text-align: center;
+    padding-top: 10px;
+}
+#imageWrapper a span{
+    margin-top: 10px;
+}
