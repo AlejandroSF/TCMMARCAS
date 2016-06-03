@@ -1,28 +1,23 @@
 <?php
 
 class PersistentObject{
-    
-    public static $table="undefined";
 
     public $id;
     public $fromDB=False;
 
+    public function getFields(){
+        $array = (array)$this;
+        unset($array['id']);
+        unset($array['fromDB']);
+        return $array;
+    }
     public function getUpdateSentence(){
         $s = array();
-        $fields = $this->getFields();
-        foreach ($fields as $key => $value) {
-            if ($key != "id") {
-                array_push($s, $key."=".$value);
-            }
+        foreach ($this->getFields() as $k => $v) {
+            array_push($s, $k."=".$v);
         }
-        return "UPDATE TABLE ".static::$table." SET ".implode(",", $s)." WHERE id='".$this->id."'";
+        return "UPDATE TABLE ".get_called_class()." SET ".implode(",", $s)." WHERE id='".$this->id."'";
     }
-    public function getFields(){
-        $s = array();
-        $s["id"]=$this->id;
-        // return array("id" => $this->id);
-        return $s;
-    }
-}
 
+}
 ?>
