@@ -83,6 +83,29 @@ function contarAciertos(aciertos)
 {
     var suma = aciertos + 1;
     
+    //alert ("NUM: "+num_imagenes_total+"SUM: "+suma)
+    
+    if(num_imagenes_total==suma)
+    {
+        //si entro aquí es porque ha acertado todas las imagenes
+        //oculto todo el contenido
+        $("#bienvenida").css("display", "none");
+        $("#id_imagen").css("display", "none");
+        $("#hitButtonWrapper").css("display", "none");
+        $("#resultado").css("display", "none");
+        $("#campo_texto").css("display", "none");
+        
+        $("#pantallaFinal").css("display", "block");
+        $("#fotos_acertadas").html(suma);
+    }
+    
+    return suma;
+}
+
+function contarFallos(fallos)
+{
+    var suma = fallos + 1;
+    
     if(num_imagenes_total==suma)
     {
         //si entro aquí es porque ha acertado todas las imagenes
@@ -125,6 +148,7 @@ $R_S_I=mysql_query($S_I,$conexion);
 <script>
 
 var aciertos = 0;
+var fallos = 0;
 var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
 </script>
     <section class="row">
@@ -179,7 +203,17 @@ var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
         </div>
         
         <div id="pantallaFinal" class="col-xs-12 col-sm-10 col-sm-offset-1" style="display: none; width: 100%;">
-            FIN DEL JUEGO
+            <h1><center>FIN DEL JUEGO</center> </h1>
+            
+            <p>De <?php echo $M_R_S_A['num_images']; ?> fotos has acertado <span id="fotos_acertadas"> </span>
+            y has fallado <script type="text/javascript"> 
+                document.writeln(fallos); 
+            </script> .
+            
+            TUS PUNTOS SON <script type="text/javascript"> 
+                document.writeln(aciertos); 
+            </script> </p>
+            
         </div>
         <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="inputWrapper">
             <span id="resultado"></span>

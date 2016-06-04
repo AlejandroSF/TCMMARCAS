@@ -16,6 +16,10 @@ if($_POST['valorCaja1']==$_POST['valorCaja2'])
 else
 {
 ?>
+    <script>
+        fallos = contarFallos(fallos);
+        alert (aciertos);
+    </script>
     <h3 id="fallo"><center>&iexcl;Has fallado!</center></h3>
 <?php
 }
