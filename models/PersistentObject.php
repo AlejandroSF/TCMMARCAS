@@ -42,8 +42,17 @@ class PersistentObject{
             $this->fromDB = True;//Ahora que el objeto está en la BD, actualizamos el flag, de manera que la próxima vez que guardemos, sea con un UPDATE
         }
     }
+    public function delete(){
+        $query = "DELETE FROM ".get_called_class()." WHERE id = ".$this->id.";";
+        $cursor = mysqli_query($this->DBConnect(), $query);
+        if ($cursor === False) {
+            echo "Error en el borrado del objeto";//Si hay un error, pues se dice y no pasa nada
+        }else{
+            $this->fromDB = False;//Ahora el objeto existe en tiempo de ejecución, pero no en la BD
+        }
+    }
 
-    private static function getByConditions($conditions){//función genérica para recuperar objetos verificando unas condiciones
+    public static function getByConditions($conditions){//función genérica para recuperar objetos verificando unas condiciones
         $s = array();
         foreach ($this->getFields() as $k => $v) {
             array_push($s, $k."=".$v);//Agrupamos las condiciones en cadenas como "nombre_columna = valor_columna"
@@ -66,7 +75,7 @@ class PersistentObject{
         return $objectArray;
     }
 
-    private static function getById($id){//Ejemplo de recuperación de objeto a partir de su clave primaria
+    public static function getById($id){//Ejemplo de recuperación de objeto a partir de su clave primaria
         $condition = array('id' => , $id);//Así se definen las condiciones <------ IMPORTANTE!!!
         $result = static::getByConditions($condition);//Llamamos al método anterior
         return (count($result)>0)?return $result[0]:null;//Si devuelve algún objeto, lo sacamos del array y lo devolvemos, en caso contrario devolvemos null
