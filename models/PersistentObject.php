@@ -23,7 +23,7 @@ class PersistentObject{
         return "INSERT INTO ".get_called_class()." VALUES (".implode(",",array_keys($this->getFields())).") VALUES ".implode(",",array_values($this->getFields())).";";
     }
     public function DBConnect() {
-        $con = mysqli_connect("localhost","API","hola","TCMMARCAS");
+        $con = mysqli_connect("localhost","API","hola","TCMMARCAS");//Dirección, Usuario, Contraseña y Nombre de la BD
         if (mysqli_connect_errno()) {
             printf("Error de conexión: %s\n", mysqli_connect_error());
             exit();
@@ -35,21 +35,28 @@ class PersistentObject{
 
     public function save(){
         $query = ($this->fromDB)?($this->getUpdateSentence()):($this->getInsertSentence());//Si el objeto procedía de la BD, la sentencia que queremos ejecutar es un UPDATE, en caso contrario, INSERT
-        $cursor = mysqli_query($this->DBConnect(), $query);
+        $db = $this->DBConnect();
+        $cursor = mysqli_query($db, $query);
         if ($cursor === False) {
             echo "Error en el guardado del objeto";//Si hay un error, pues se dice y no pasa nada
         }else{
-            $this->fromDB = True;//Ahora que el objeto está en la BD, actualizamos el flag, de manera que la próxima vez que guardemos, sea con un UPDATE
+            if ($this->fromDB != True) {
+                $this->id = mysqli_insert_id($db);
+                $this->fromDB = True;//Ahora que el objeto está en la BD, actualizamos el flag, de manera que la próxima vez que guardemos, sea con un UPDATE
+            }
         }
+        mysql_close($db);
     }
     public function delete(){
         $query = "DELETE FROM ".get_called_class()." WHERE id = ".$this->id.";";
-        $cursor = mysqli_query($this->DBConnect(), $query);
+        $db = $this->DBConnect();
+        $cursor = mysqli_query($db, $query);
         if ($cursor === False) {
             echo "Error en el borrado del objeto";//Si hay un error, pues se dice y no pasa nada
         }else{
             $this->fromDB = False;//Ahora el objeto existe en tiempo de ejecución, pero no en la BD
         }
+        mysql_close($db);
     }
 
     public static function getByConditions($conditions){//función genérica para recuperar objetos verificando unas condiciones
@@ -59,7 +66,8 @@ class PersistentObject{
         }
         $conditionsString = implode(" AND ", $s)//Los unimos con "AND", para tener algo como "Condición1 AND Condición2 AND Condición3…"
         $query = "SELECT * FROM ".get_called_class()." WHERE ".$conditionsString.";";//Construimos la consulta
-        $cursor = mysqli_query($this->DBConnect(), $query);
+        $db = $this->DBConnect();
+        $cursor = mysqli_query($db, $query);
         $objectArray = array();//Creamos el array que contendrá los objetos recuperados
         for ($i=0; $i < mysqli_num_rows($cursor); $i++) {
             $row = mysql_fetch_assoc($cursor);
@@ -72,6 +80,7 @@ class PersistentObject{
             $object->fromDB = True;//El objeto viene de la BD, y lo marcamos como tal
             array_push($objectArray, $object);//Por último, lo metemos en el array a devolver
         }
+        mysql_close($db);
         return $objectArray;
     }
 
