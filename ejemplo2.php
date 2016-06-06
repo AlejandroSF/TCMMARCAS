@@ -65,10 +65,21 @@ function mostrar(i_arrayJS,r_arrayJS)
             $("#num").val(numerico);
             //$("#num").val();
             
+            //SABER SI LLEGA AL FINAL DE LAS IMAGENES
+            if(num_imagenes_total<numerico)
+            {
+                //alert ("FIN JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
+            }
+            else
+            {
+                //alert ("CONTINUAL JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
+            }
+                        
             //limpio el campo de texto
             $("#cuadroTexto").val("");
-            //limpiar texto acierto
+            //limpiar texto acierto y fallo
             $('#acierto').toggle();
+            $('#fallo').toggle();
             //hacer visible boton siguiente
             $('#siguiente').show();
             //hacer visible boton pista
@@ -96,7 +107,10 @@ function contarAciertos(aciertos)
         $("#campo_texto").css("display", "none");
         
         $("#pantallaFinal").css("display", "block");
-        $("#fotos_acertadas").html(suma);
+        if(suma==0)
+            $("#fotos_acertadas").html("0");
+        else
+            $("#fotos_acertadas").html(suma);
     }
     
     return suma;
@@ -117,6 +131,7 @@ function contarFallos(fallos)
         $("#campo_texto").css("display", "none");
         
         $("#pantallaFinal").css("display", "block");
+        $("#fotos_falladas").html(suma);
     }
     
     return suma;
@@ -206,9 +221,7 @@ var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
             <h1><center>FIN DEL JUEGO</center> </h1>
             
             <p>De <?php echo $M_R_S_A['num_images']; ?> fotos has acertado <span id="fotos_acertadas"> </span>
-            y has fallado <script type="text/javascript"> 
-                document.writeln(fallos); 
-            </script> .
+            y has fallado <span id="fotos_falladas"> </span>.
             
             TUS PUNTOS SON <script type="text/javascript"> 
                 document.writeln(aciertos); 

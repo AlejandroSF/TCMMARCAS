@@ -18,7 +18,7 @@ else
 ?>
     <script>
         fallos = contarFallos(fallos);
-        alert (aciertos);
+        //alert (fallos);
     </script>
     <h3 id="fallo"><center>&iexcl;Has fallado!</center></h3>
 <?php
