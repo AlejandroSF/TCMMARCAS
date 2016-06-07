@@ -14,4 +14,10 @@ function DBConnect() {
         return $con;
     }
 }
+function getResultFromQuery($query){
+	$db =DBConnect();
+    $cursor = mysqli_query($db, $query);
+    mysqli_close($db);
+    return $cursor;
+}
 ?>

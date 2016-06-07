@@ -13,7 +13,6 @@ class GameReservation extends PersistentObject{
 }
 
 GameReservation::classInit();
-$r = new GameReservation();
-//echo $r->getUpdateSentence();
-echo "<br><br>".strval($r);
+// $r = new GameReservation();
+// echo "<br><br>".strval($r);
 ?>

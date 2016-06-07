@@ -40,9 +40,7 @@ class PersistentObject{
     }
 
     public function save(){
-        $query = ($this->fromDB)?($this->getUpdateSentence()):($this->getInsertSentence());//Si el objeto procedía de la BD, la sentencia que queremos ejecutar es un UPDATE, en caso contrario, INSERT
-        $db =DBConnect();
-        $cursor = mysqli_query($db, $query);
+        $cursor = getResultFromQuery(($this->fromDB)?($this->getUpdateSentence()):($this->getInsertSentence()));//Si el objeto procedía de la BD, la sentencia que queremos ejecutar es un UPDATE, en caso contrario, INSERT
         if ($cursor === False) {
             echo "Error en el guardado del objeto";//Si hay un error, pues se dice y no pasa nada
         }else{
@@ -51,18 +49,14 @@ class PersistentObject{
                 $this->fromDB = True;//Ahora que el objeto está en la BD, actualizamos el flag, de manera que la próxima vez que guardemos, sea con un UPDATE
             }
         }
-        mysql_close($db);
     }
     public function delete(){
-        $query = "DELETE FROM ".get_called_class()." WHERE id = ".$this->id.";";
-        $db = DBConnect();
-        $cursor = mysqli_query($db, $query);
+        $cursor = getResultFromQuery("DELETE FROM ".get_called_class()." WHERE id = ".$this->id.";");
         if ($cursor === False) {
             echo "Error en el borrado del objeto";//Si hay un error, pues se dice y no pasa nada
         }else{
             $this->fromDB = False;//Ahora el objeto existe en tiempo de ejecución, pero no en la BD
         }
-        mysql_close($db);
     }
 
     public static function getByConditions($conditions){//función genérica para recuperar objetos verificando unas condiciones
@@ -71,9 +65,7 @@ class PersistentObject{
             array_push($s, $k."=".$v);//Agrupamos las condiciones en cadenas como "nombre_columna = valor_columna"
         }
         $conditionsString = implode(" AND ", $s);//Los unimos con "AND", para tener algo como "Condición1 AND Condición2 AND Condición3…"
-        $query = "SELECT * FROM ".get_called_class()." WHERE ".$conditionsString.";";//Construimos la consulta
-        $db =DBConnect();
-        $cursor = mysqli_query($db, $query);
+        $cursor = getResultFromQuery("SELECT * FROM ".get_called_class()." WHERE ".$conditionsString.";");//Construimos la consulta
         $objectArray = array();//Creamos el array que contendrá los objetos recuperados
         for ($i=0; $i < mysqli_num_rows($cursor); $i++) {
             $row = mysql_fetch_assoc($cursor);
@@ -86,7 +78,6 @@ class PersistentObject{
             $object->fromDB = True;//El objeto viene de la BD, y lo marcamos como tal
             array_push($objectArray, $object);//Por último, lo metemos en el array a devolver
         }
-        mysql_close($db);
         return $objectArray;
     }
 
