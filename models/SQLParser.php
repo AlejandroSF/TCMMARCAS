@@ -14,11 +14,6 @@ class SQLParser{
 		$fields = mysqli_query($db, $query);
 		foreach ($fields as $fieldName => $fieldInfo) {
 			$this->fieldType[$fieldName] = explode("(",$fieldInfo['Type'])[0];
-			//echo $this->fieldType[$fieldName]."<br>";
-			//echo "<br>".$fieldName."<br><br>";
-			//foreach ($fieldInfo as $fieldAttribute => $attributeValue) {
-				//echo $fieldAttribute.": ".$attributeValue."<br>";
-			//}
 		}
 	}
 
@@ -39,5 +34,5 @@ class SQLParser{
 		}
 	}
 }
-new SQLParser("GameReservation");
+//new SQLParser("GameReservation");
 ?>

@@ -1,9 +1,11 @@
 <?php
+include_once 'SQLParser.php';
 
 class PersistentObject{
 
     public $id;//La Primary Key, debe ser numérica y auto-incrementada (o autogenerada)
     public $fromDB=False;//Indica si el objeto se ha recuperado de la base de datos o si, por el contario (caso por defecto), se ha creado fuera
+    public static $parser = new SQLParser(get_called_class());
 
     public function getFields(){//Devolvemos los campos como array asociativo (excepto la clave primaria y el flag de persistencia)
         $array = (array)$this;
