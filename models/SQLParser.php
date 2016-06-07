@@ -1,7 +1,9 @@
 <?php
 include_once 'PersistentObject.php';
 include_once 'GameReservation.php';
+include_once 'Settings.php';
 
+error_reporting(0);
 class SQLParser{
 
 	public $clientClass;
@@ -10,10 +12,10 @@ class SQLParser{
 	function __construct($clientClass){
 		$this->clientClass = $clientClass;
 		$query = "DESCRIBE ".$clientClass.";";
-		$db = $clientClass::DBConnect();
+		$db = DBConnect();
 		$fields = mysqli_query($db, $query);
 		foreach ($fields as $fieldName => $fieldInfo) {
-			$this->fieldType[$fieldName] = explode("(",$fieldInfo['Type'])[0];
+			$this->fieldType[$fieldInfo['Field']] = explode("(",$fieldInfo['Type'])[0];
 		}
 	}
 
@@ -22,10 +24,10 @@ class SQLParser{
 		foreach ($objects as $key => $value) {
 			switch ($this->fieldType[$key]) {
 				case 'int':
-					array_push($strings, $value);
+					$strings[$key]=strval($value);
 					break;
 				case 'varchar':
-					array_push($strings, "'".$value."'");
+					$strings[$key]="'".$value."'";
 					break;
 				default:
 					array_push($strings, "'".$value."'");
@@ -34,5 +36,10 @@ class SQLParser{
 		}
 	}
 }
-//new SQLParser("GameReservation");
+echo "<br><br><br>";
+$parser = new SQLParser("GameReservation");
+//var_dump($parser->fieldType);
+foreach ($parser->fieldType as $key => $value) {
+	echo $key.": ".$value."<br>";
+}
 ?>

@@ -1,17 +1,31 @@
 <?php
 include_once 'SQLParser.php';
+include_once 'Settings.php';
 
 class PersistentObject{
 
     public $id;//La Primary Key, debe ser numérica y auto-incrementada (o autogenerada)
     public $fromDB=False;//Indica si el objeto se ha recuperado de la base de datos o si, por el contario (caso por defecto), se ha creado fuera
-    public static $parser = new SQLParser(get_called_class());
+    public static $parser;
 
-    public function getFields(){//Devolvemos los campos como array asociativo (excepto la clave primaria y el flag de persistencia)
+    public static function classInit(){
+        static::$parser = (new SQLParser(get_called_class()));
+    }
+
+    public function getFields($excludeAuxiliaryFields = True){//Devolvemos los campos como array asociativo (excepto la clave primaria y el flag de persistencia)
         $array = (array)$this;
-        unset($array['id']);
-        unset($array['fromDB']);
+        if ($excludeAuxiliaryFields) {
+            unset($array['id']);
+            unset($array['fromDB']);
+        }
         return $array;
+    }
+    public function __toString(){
+        $s="";
+        foreach ($this->getFields(False) as $key => $value) {
+            $s.= $key.": ".$value."<br>";
+        }
+        return $s;
     }
     public function getUpdateSentence(){
         $s = array();
@@ -23,20 +37,10 @@ class PersistentObject{
     public function getInsertSentence(){
         return "INSERT INTO ".get_called_class()." VALUES (".implode(",",array_keys($this->getFields())).") VALUES ".implode(",",array_values($this->getFields())).";";
     }
-    public static function DBConnect() {
-        $con = mysqli_connect("localhost","API","hola","TCMMARCAS");//Dirección, Usuario, Contraseña y Nombre de la BD
-        if (mysqli_connect_errno()) {
-            printf("Error de conexión: %s\n", mysqli_connect_error());
-            exit();
-        }else{
-            mysqli_set_charset($con, "utf8");//Importante, que luego las "ñ"s (y demás) dan problemas
-            return $con;
-        }
-    }
 
     public function save(){
         $query = ($this->fromDB)?($this->getUpdateSentence()):($this->getInsertSentence());//Si el objeto procedía de la BD, la sentencia que queremos ejecutar es un UPDATE, en caso contrario, INSERT
-        $db = $this->DBConnect();
+        $db =DBConnect();
         $cursor = mysqli_query($db, $query);
         if ($cursor === False) {
             echo "Error en el guardado del objeto";//Si hay un error, pues se dice y no pasa nada
@@ -50,7 +54,7 @@ class PersistentObject{
     }
     public function delete(){
         $query = "DELETE FROM ".get_called_class()." WHERE id = ".$this->id.";";
-        $db = $this->DBConnect();
+        $db = DBConnect();
         $cursor = mysqli_query($db, $query);
         if ($cursor === False) {
             echo "Error en el borrado del objeto";//Si hay un error, pues se dice y no pasa nada
@@ -67,7 +71,7 @@ class PersistentObject{
         }
         $conditionsString = implode(" AND ", $s);//Los unimos con "AND", para tener algo como "Condición1 AND Condición2 AND Condición3…"
         $query = "SELECT * FROM ".get_called_class()." WHERE ".$conditionsString.";";//Construimos la consulta
-        $db = $this->DBConnect();
+        $db =DBConnect();
         $cursor = mysqli_query($db, $query);
         $objectArray = array();//Creamos el array que contendrá los objetos recuperados
         for ($i=0; $i < mysqli_num_rows($cursor); $i++) {
@@ -91,4 +95,5 @@ class PersistentObject{
         return (count($result)>0)? $result[0]:null;//Si devuelve algún objeto, lo sacamos del array y lo devolvemos, en caso contrario devolvemos null
     }
 }
+PersistentObject::classInit();//añadir esta línea en todas las subclases de PersistentObject (con )
 ?>
