@@ -30,16 +30,17 @@ class SQLParser{
 					$strings[$key]="'".$value."'";
 					break;
 				default:
-					array_push($strings, "'".$value."'");
+					$strings[$key]="'".$value."'";
 					break;
 			}
 		}
+		return $strings;
 	}
 }
-echo "<br><br><br>";
-$parser = new SQLParser("GameReservation");
-//var_dump($parser->fieldType);
-foreach ($parser->fieldType as $key => $value) {
-	echo $key.": ".$value."<br>";
-}
+// echo "<br><br><br>";
+// $parser = new SQLParser("GameReservation");
+// //var_dump($parser->fieldType);
+// foreach ($parser->fieldType as $key => $value) {
+// 	echo $key.": ".$value."<br>";
+// }
 ?>

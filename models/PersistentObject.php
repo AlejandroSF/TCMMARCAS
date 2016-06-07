@@ -8,6 +8,10 @@ class PersistentObject{
     public $fromDB=False;//Indica si el objeto se ha recuperado de la base de datos o si, por el contario (caso por defecto), se ha creado fuera
     public static $parser;
 
+    function __construct(){
+        $this->fromDB = False;
+    }
+
     public static function classInit(){
         static::$parser = (new SQLParser(get_called_class()));
     }
@@ -21,21 +25,18 @@ class PersistentObject{
         return $array;
     }
     public function __toString(){
-        $s="";
-        foreach ($this->getFields(False) as $key => $value) {
-            $s.= $key.": ".$value."<br>";
-        }
-        return $s;
+        return json_encode($this->getFields(False));
     }
     public function getUpdateSentence(){
         $s = array();
-        foreach ($this->getFields() as $k => $v) {
+        $fieldStrings = static::$parser->ObjectToStringArray($this->getFields());
+        foreach ($fieldStrings as $k => $v) {
             array_push($s, $k."=".$v);
         }
-        return "UPDATE TABLE ".get_called_class()." SET ".implode(",", $s)." WHERE id='".$this->id."';";
+        return "UPDATE TABLE ".get_called_class()." SET ".implode(", ", $s)." WHERE id=".$this->id.";";
     }
     public function getInsertSentence(){
-        return "INSERT INTO ".get_called_class()." VALUES (".implode(",",array_keys($this->getFields())).") VALUES ".implode(",",array_values($this->getFields())).";";
+        return "INSERT INTO ".get_called_class()." VALUES (".implode(", ",array_keys($this->getFields())).") VALUES ".implode(",",array_values($this->getFields())).";";
     }
 
     public function save(){

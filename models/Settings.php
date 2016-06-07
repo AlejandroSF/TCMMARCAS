@@ -4,7 +4,7 @@ define('DBPass', 'hola');
 define('DBName', 'TCMMARCAS');
 define('DBAddress', 'localhost');
 
-public function DBConnect() {
+function DBConnect() {
     $con = mysqli_connect(DBAddress,DBUser,DBPass,DBName);//Dirección, Usuario, Contraseña y Nombre de la BD
     if (mysqli_connect_errno()) {
         printf("Error de conexión: %s\n", mysqli_connect_error());
