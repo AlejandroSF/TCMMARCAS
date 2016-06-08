@@ -3,18 +3,16 @@ include_once 'PersistentObject.php';
 
 class GameReservation extends PersistentObject{
 
-    public $token = 12345;
-    public $invitation = "56789";
-    public $promotion = "98765";
+    public $token;
+    public $invitation;
+    public $promotion;
 
-    function __construct(){
+    function __construct($token,$invitation,$promotion){
     	parent::__construct();
+    	$this->token = $token;
+    	$this->invitation = $invitation;
+    	$this->promotion = $promotion;
     }
 }
-$r = new GameReservation();
-$r->save();
-$s = GameReservation::getById($r->id);
-var_dump($r);
-echo "<br><br>";
-var_dump($s);
+
 ?>

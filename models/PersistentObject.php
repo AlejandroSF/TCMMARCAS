@@ -2,10 +2,13 @@
 include_once 'SQLParser.php';
 include_once 'Settings.php';
 
+include_once 'GameRequest.php';
+include_once 'GameReservation.php';
+
 class PersistentObject{
 
     public $id;//La Primary Key, debe ser numérica y auto-incrementada (o autogenerada)
-    public $fromDB=False;//Indica si el objeto se ha recuperado de la base de datos o si, por el contario (caso por defecto), se ha creado fuera
+    public $fromDB;//Indica si el objeto se ha recuperado de la base de datos o si, por el contario (caso por defecto), se ha creado fuera
     public static $parser;
 
     function __construct(){
