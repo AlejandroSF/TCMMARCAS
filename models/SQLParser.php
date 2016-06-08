@@ -9,20 +9,20 @@ class SQLParser{
 	public $clientClass;
 	public $fieldType = array();
 
-	function __construct($clientClass){
+	function __construct($clientClass){//El constructor recibe una referencia a la clase de la que se ocupa de "parsear"
 		$this->clientClass = $clientClass;
 		$query = "DESCRIBE ".$clientClass.";";
 		$db = DBConnect();
 		$fields = mysqli_query($db, $query);
 		foreach ($fields as $fieldName => $fieldInfo) {
-			$this->fieldType[$fieldInfo['Field']] = explode("(",$fieldInfo['Type'])[0];
+			$this->fieldType[$fieldInfo['Field']] = explode("(",$fieldInfo['Type'])[0];//En el array FieldType, almacenamos el tipo de variable que espera la base de datos para cada campo
 		}
 	}
 
 	public function objectToStringArray($objects){
 		$strings = array();
 		foreach ($objects as $key => $value) {
-			switch ($this->fieldType[$key]) {
+			switch ($this->fieldType[$key]) {//En función del tipo de valor esperado, aplicamos una conversión u otra (en este momento son todas la misma, pero eso probablemente cambie)
 				case 'int':
 					$strings["`".$key."`"]="'".$value."'";
 					break;
@@ -54,10 +54,4 @@ class SQLParser{
 		return $objects;
 	}
 }
-// echo "<br><br><br>";
-// $parser = new SQLParser("GameReservation");
-// //var_dump($parser->fieldType);
-// foreach ($parser->fieldType as $key => $value) {
-// 	echo $key.": ".$value."<br>";
-// }
 ?>
