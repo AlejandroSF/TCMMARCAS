@@ -19,22 +19,39 @@ class SQLParser{
 		}
 	}
 
-	public function ObjectToStringArray($objects){
+	public function objectToStringArray($objects){
 		$strings = array();
 		foreach ($objects as $key => $value) {
 			switch ($this->fieldType[$key]) {
 				case 'int':
-					$strings[$key]=strval($value);
+					$strings["`".$key."`"]="'".$value."'";
 					break;
 				case 'varchar':
-					$strings[$key]="'".$value."'";
+					$strings["`".$key."`"]="'".$value."'";
 					break;
 				default:
-					$strings[$key]="'".$value."'";
+					$strings["`".$key."`"]="'".$value."'";
 					break;
 			}
 		}
 		return $strings;
+	}
+	public function stringToObjectArray($strings){
+		$objects = array();
+		foreach ($strings as $key => $value) {
+			switch ($this->fieldType[$key]) {
+				case 'int':
+					$objects[$key]=intval($value);
+					break;
+				case 'varchar':
+					$objects[$key]=$value;
+					break;
+				default:
+					$objects[$key]=$value;
+					break;
+			}
+		}
+		return $objects;
 	}
 }
 // echo "<br><br><br>";
