@@ -1,13 +1,11 @@
 function contador(){
 	i = i + 1;
 	var btn = document.getElementById("boton");
-	if(i<4)
-	{
+	if(i<4){
 		$("#imageWrapper").css("-webkit-filter", "blur(10px)");
 		btn.value = "ACLARAR " + i + "";
 	}
-	else
-	{
+	else{
 		alert ("HAS GASTADO LAS PISTAS");
 	}
 }
@@ -30,14 +28,12 @@ function realizaProceso(valorCaja1, valorCaja2){
         });
 }
 
-function contarAciertos(aciertos)
-{
+function contarAciertos(aciertos){
     var suma = aciertos + 1;
     
     //alert ("NUM: "+num_imagenes_total+"SUM: "+suma)
     
-    if(num_imagenes_total==suma)
-    {
+    if(num_imagenes_total==suma){
         //si entro aquí es porque ha acertado todas las imagenes
         //oculto todo el contenido
         /*$("#bienvenida").css("display", "none");
@@ -71,8 +67,7 @@ function contarFallos(fallos)
 {
     var suma = fallos + 1;
     
-    if(num_imagenes_total==suma)
-    {
+    if(num_imagenes_total==suma){
         /*//si entro aquí es porque ha acertado todas las imagenes
         //oculto todo el contenido
         $("#bienvenida").css("display", "none");
@@ -87,7 +82,6 @@ function contarFallos(fallos)
         $("#fotos_falladas").html(suma);
         $("#puntos_ganados").html("0");
         */
-        
         
     }
     

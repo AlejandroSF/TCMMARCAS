@@ -9,8 +9,7 @@
 		setTimeout("zoom2()",500)
 	}
 	
-function mostrar(i_arrayJS,r_arrayJS)
-{
+function mostrar(i_arrayJS,r_arrayJS){
     
             /*for(var i=0;i<i_arrayJS.length;i++)
             {
@@ -28,8 +27,7 @@ function mostrar(i_arrayJS,r_arrayJS)
             var num = $("#num").val();
             //alert("Num: "+num);
             
-            if(num==0)
-            {
+            if(num==0){
                 tiempo();
             }
             
@@ -49,8 +47,7 @@ function mostrar(i_arrayJS,r_arrayJS)
             //$("#num").val();
             
             //SABER SI LLEGA AL FINAL DE LAS IMAGENES
-            if(num_imagenes_total<numerico)
-            {
+            if(num_imagenes_total<numerico){
                 //alert ("fin imagenes");
                 $("#bienvenida").css("display", "none");
                 $("#id_imagen").css("display", "none");
@@ -61,13 +58,11 @@ function mostrar(i_arrayJS,r_arrayJS)
                 $("#pantallaFinal").css("display", "block");
                 $("#contenedor").css("display", "none");
                 
-                if(aciertos=="")
-                {
+                if(aciertos==""){
                     $("#fotos_acertadas").html("0");
                     $("#puntos_ganados").html("0");
                 }
-                else
-                {
+                else{
                     $("#fotos_acertadas").html(aciertos);
                     $("#puntos_ganados").html((aciertos*100)-(i*50));
                 }
@@ -84,8 +79,7 @@ function mostrar(i_arrayJS,r_arrayJS)
                         
                 //alert ("FIN JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
             }
-            else
-            {
+            else{
                 //alert ("continuamos");
                 //alert ("CONTINUAL JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
                 
@@ -107,41 +101,39 @@ function mostrar(i_arrayJS,r_arrayJS)
 }
 
 //var segundos = 90; //Segundos de la cuenta atrás 
-    function tiempo(){  
-  var t = setTimeout("tiempo()",1000);  
-  document.getElementById('contenedor').innerHTML = '<b>Tiempo de juego '+segundos--+" seg.</b>"; 
-  //alert ("hola"); 
-  if(segundos<2){
-        //alert ("dentro");
-        //window.location.href='http://www.google.es';  //Págiana a la que redireccionará a X segundos
-        $("#bienvenida").css("display", "none");
-        $("#id_imagen").css("display", "none");
-        $("#hitButtonWrapper").css("display", "none");
-        $("#resultado").css("display", "none");
-        $("#campo_texto").css("display", "none");
-        $("#contenedor").css("display", "none");
-        
-        $("#pantallaFinal").css("display", "block");
-        
-        if(aciertos=="")
-        {
-            $("#fotos_acertadas").html("0");
-            $("#puntos_ganados").html("0");
-        }
-        else
-        {
-         
-            $("#fotos_acertadas").html(aciertos);
-            $("#puntos_ganados").html((aciertos*100)-(i*50));   
-        }
-        
-        if(fallos=="")
-            $("#fotos_falladas").html("0");
-        else
-            $("#fotos_falladas").html(fallos);
-        
-        
-  
-   clearTimeout(t);  
-  }  
+  function tiempo(){  
+		var t = setTimeout("tiempo()",1000);  
+		document.getElementById('contenedor').innerHTML = '<b>Tiempo de juego '+segundos--+" seg.</b>"; 
+		//alert ("hola"); 
+		
+		if(segundos<2){
+			//alert ("dentro");
+			//window.location.href='http://www.google.es';  //Págiana a la que redireccionará a X segundos
+			$("#bienvenida").css("display", "none");
+			$("#id_imagen").css("display", "none");
+			$("#hitButtonWrapper").css("display", "none");
+			$("#resultado").css("display", "none");
+			$("#campo_texto").css("display", "none");
+			$("#contenedor").css("display", "none");
+			
+			$("#pantallaFinal").css("display", "block");
+			
+			if(aciertos==""){
+				$("#fotos_acertadas").html("0");
+				$("#puntos_ganados").html("0");
+			}
+			else{
+			 
+				$("#fotos_acertadas").html(aciertos);
+				$("#puntos_ganados").html((aciertos*100)-(i*50));   
+			}
+			
+			if(fallos=="")
+				$("#fotos_falladas").html("0");
+			else
+				$("#fotos_falladas").html(fallos);
+
+				
+	   clearTimeout(t);  
+	  }  
  }  
