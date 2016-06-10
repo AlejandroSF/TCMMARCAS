@@ -4,7 +4,7 @@ include_once '../models/PersistentObject.php';
 
 session_start();
 if (!isset($_REQUEST['validation'])||!isset($_REQUEST['invitation'])) {
-	//#No @TO-DO
+	include '../pages/errorpage.php';
 }else{
 	if (isset($_SESSION['Game'])) {
 		include '../pages/gamepage.php';
