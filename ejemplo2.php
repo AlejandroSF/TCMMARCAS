@@ -3,7 +3,7 @@ include("cpanel/conexion.php");
 ?>
 <!DOCTYPE html>
 <html>
-<head>
+<head>    
     <meta charset="UTF-8"/>
     <title>PIISW</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -14,7 +14,53 @@ include("cpanel/conexion.php");
     <script type="text/javascript" src="js/javascript.js"></script>
     <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
-<script>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Kanit"/> <!--codigo para las fuentes del encabezado-->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sarpanch"/> <!--codigo para las fuentes del encabezado-->
+    
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="js/javascript.js"></script>
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+    <script language="javascript">
+    
+    	function zoom2(){
+		document.getElementById("id_imagen").style.transform="scale(1)";	
+		document.getElementById("id_imagen").style.transition="width 1s, height 1s, transform 1s";	
+		}
+		
+		function zoom(){
+		document.getElementById("id_imagen").style.transform="scale(1.1)";	
+		document.getElementById("id_imagen").style.transition="width 1s, height 1s, transform 1s";	
+		setTimeout("zoom2()",500)
+		}
+    
+    
+    
+    
+var i = 0;//variable que cuenta las veces que le das a la pista
+ 
+function contador()
+{
+    
+    
+    
+i = i + 1;
+var btn = document.getElementById("boton");
+if(i<4)
+{
+    $("#imageWrapper").css("-webkit-filter", "blur(10px)");
+    btn.value = "ACLARAR " + i + "";
+}
+else
+{
+    alert ("HAS GASTADO LAS PISTAS");
+}
+
+
+}
+
+
 function realizaProceso(valorCaja1, valorCaja2){
         var parametros = {
                 "valorCaja1" : valorCaja1,
@@ -36,6 +82,7 @@ function realizaProceso(valorCaja1, valorCaja2){
 
 function mostrar(i_arrayJS,r_arrayJS)
 {
+        
             /*for(var i=0;i<i_arrayJS.length;i++)
             {
                 document.write("<br>"+i_arrayJS[i]);
@@ -52,7 +99,14 @@ function mostrar(i_arrayJS,r_arrayJS)
             var num = $("#num").val();
             //alert("Num: "+num);
             
+            if(num==0)
+            {
+                tiempo();
+            }
+            
+            
             //aqui pasamos a la siguiente imagen
+            $("#imageWrapper").css("-webkit-filter", "blur(15px)");
             $("#id_imagen").attr("src","cpanel/imagenes/" + i_arrayJS[num]);
             //$("#id_imagen").("src","cpanel/imagenes/" + i_arrayJS[num]);
             //aqui pasamos a la siguiente respuesta correcta
@@ -68,27 +122,59 @@ function mostrar(i_arrayJS,r_arrayJS)
             //SABER SI LLEGA AL FINAL DE LAS IMAGENES
             if(num_imagenes_total<numerico)
             {
+                //alert ("fin imagenes");
+                $("#bienvenida").css("display", "none");
+                $("#id_imagen").css("display", "none");
+                $("#hitButtonWrapper").css("display", "none");
+                $("#resultado").css("display", "none");
+                $("#campo_texto").css("display", "none");
+        
+                $("#pantallaFinal").css("display", "block");
+                $("#contenedor").css("display", "none");
+                
+                if(aciertos=="")
+                {
+                    $("#fotos_acertadas").html("0");
+                    $("#puntos_ganados").html("0");
+                }
+                else
+                {
+                    $("#fotos_acertadas").html(aciertos);
+                    $("#puntos_ganados").html((aciertos*100)-(i*50));
+                }
+                    
+                
+                if(fallos=="")
+                    $("#fotos_falladas").html("0");
+                else
+                    $("#fotos_falladas").html(fallos);
+                        
+                /*$("#fotos_acertadas").html(aciertos);
+                $("#fotos_falladas").html(fallos);*/
+                
+                        
                 //alert ("FIN JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
             }
             else
             {
+                //alert ("continuamos");
                 //alert ("CONTINUAL JUEGO NUM: " +num_imagenes_total+ " numerico: "+numerico)
+                
+                //limpio el campo de texto
+                $("#cuadroTexto").val("");
+                //limpiar texto acierto y fallo
+                $('#acierto').toggle();
+                $('#fallo').toggle();
+                //hacer visible boton siguiente
+                $('#siguiente').show();
+                //hacer visible boton pista
+                $('#hitButtonWrapper').show();
+                $("#campo_texto").css("display", "block");
+                
+                $("#pantallaFinal").css("display", "none");
+
             }
-                        
-            //limpio el campo de texto
-            $("#cuadroTexto").val("");
-            //limpiar texto acierto y fallo
-            $('#acierto').toggle();
-            $('#fallo').toggle();
-            //hacer visible boton siguiente
-            $('#siguiente').show();
-            //hacer visible boton pista
-            $('#hitButtonWrapper').show();
-            $("#campo_texto").css("display", "block");
-            
-            $("#pantallaFinal").css("display", "none");
-            
-            
+                       
 }
 function contarAciertos(aciertos)
 {
@@ -100,17 +186,28 @@ function contarAciertos(aciertos)
     {
         //si entro aquí es porque ha acertado todas las imagenes
         //oculto todo el contenido
-        $("#bienvenida").css("display", "none");
+        /*$("#bienvenida").css("display", "none");
         $("#id_imagen").css("display", "none");
         $("#hitButtonWrapper").css("display", "none");
         $("#resultado").css("display", "none");
         $("#campo_texto").css("display", "none");
         
         $("#pantallaFinal").css("display", "block");
-        if(suma==0)
+        $("#contenedor").css("display", "none");
+        $("#fotos_acertadas").html(aciertos);
+        $("#fotos_falladas").html("0");
+        $("#puntos_ganados").html((aciertos*100)-i);
+        */
+        
+        /*if(suma==0)
+        {
             $("#fotos_acertadas").html("0");
+        }
         else
+        {
             $("#fotos_acertadas").html(suma);
+        }*/
+            
     }
     
     return suma;
@@ -122,7 +219,7 @@ function contarFallos(fallos)
     
     if(num_imagenes_total==suma)
     {
-        //si entro aquí es porque ha acertado todas las imagenes
+        /*//si entro aquí es porque ha acertado todas las imagenes
         //oculto todo el contenido
         $("#bienvenida").css("display", "none");
         $("#id_imagen").css("display", "none");
@@ -131,20 +228,93 @@ function contarFallos(fallos)
         $("#campo_texto").css("display", "none");
         
         $("#pantallaFinal").css("display", "block");
+        $("#contenedor").css("display", "none");
+        $("#fotos_acertadas").html("0");
         $("#fotos_falladas").html(suma);
+        $("#puntos_ganados").html("0");
+        */
+        
+        
     }
     
     return suma;
 }
 
 </script>
+
+<script language="javascript">
+  
+
+ //var segundos = 90; //Segundos de la cuenta atrás 
+    function tiempo(){  
+  var t = setTimeout("tiempo()",1000);  
+  document.getElementById('contenedor').innerHTML = '<b>Tiempo de juego '+segundos--+" seg.</b>"; 
+  //alert ("hola"); 
+  if(segundos<2){
+        //alert ("dentro");
+        //window.location.href='http://www.google.es';  //Págiana a la que redireccionará a X segundos
+        $("#bienvenida").css("display", "none");
+        $("#id_imagen").css("display", "none");
+        $("#hitButtonWrapper").css("display", "none");
+        $("#resultado").css("display", "none");
+        $("#campo_texto").css("display", "none");
+        $("#contenedor").css("display", "none");
+        
+        $("#pantallaFinal").css("display", "block");
+        
+        if(aciertos=="")
+        {
+            $("#fotos_acertadas").html("0");
+            $("#puntos_ganados").html("0");
+        }
+        else
+        {
+         
+            $("#fotos_acertadas").html(aciertos);
+            $("#puntos_ganados").html((aciertos*100)-(i*50));   
+        }
+        
+        if(fallos=="")
+            $("#fotos_falladas").html("0");
+        else
+            $("#fotos_falladas").html(fallos);
+        
+        
+  
+   clearTimeout(t);  
+  }  
+ }  
+ 
+ function quitarBlur(usapista)
+ {
+
+ }
+    </script>
+    <style>
+    
+    #imageWrapper{
+      background:;
+      /*margin:20px;
+      width: 100px;
+      height: 100px;*/
+      
+      /*blur*/
+      filter: blur(0px); 
+      -webkit-filter: blur(15px); 
+      -moz-filter: blur(0px);
+      -o-filter: blur(0px);
+      -ms-filter: blur(0px);
+    }
+    
+    </style>
 </head>
 
 <body>
+
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
-        <h3><center>TCM</center></h3>
-        <h4><center>"EL JUEGO DE LAS MARCAS"</center></h4>
+        <h3 style="font-family: Kanit;"><center><font font-family="http://fonts.googleapis.com/css?family=Kanit" color="white">TCM</font></center></h3>
+        <h4 style="font-family: Sarpanch;"><center><font color="white">"EL JUEGO DE LAS MARCAS"</font></center></h4>
     </div>
 </nav>
 <div class="container">
@@ -161,10 +331,11 @@ $S_I="SELECT * FROM imagenes ORDER BY RAND() LIMIT 0,".$M_R_S_A['num_images'].""
 $R_S_I=mysql_query($S_I,$conexion);
 ?>
 <script>
-
 var aciertos = 0;
 var fallos = 0;
 var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
+var segundos =<?php echo $M_R_S_A['tiempo_juego'];?>;
+var pistas = 0;
 </script>
     <section class="row">
         <div id="bienvenida" class="col-xs-12 col-sm-10 col-sm-offset-1" id="imageWrapper">
@@ -172,6 +343,8 @@ var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
             <h1><center>El juego de las marcas</center></h1>
             <center><input type="button" style="background: #00FF40; width: 100%; border-radius: 5px;font-size: 2em; border: 0; color: white;" onclick="mostrar(i_arrayJS,r_arrayJS)" value="COMENZAR A JUGAR"/></center>
         </div>
+        <div style="margin-left: 3%;" id="contenedor"></div>
+        <br />
         <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="imageWrapper">
         <?php
         $imagenes = array();
@@ -203,29 +376,30 @@ var num_imagenes_total =<?php echo $M_R_S_A['num_images'];?>;
             //var img = mostrar(i_arrayJS,r_arrayJS);
         </script>
 
-        <img width="100%" height="45%" id="id_imagen"/>
+        <img width="100%" height="290px" id="id_imagen"/>
             
         </div>
         
-        <div id="hitButtonWrapper" style="display: none; width: 100%;">
+        <div id="hitButtonWrapper" style="display: none; width: 92%; margin-left: 4%; margin-right: 4%;">
         <!--<input type="button" value="EMPEZAR" onclick="mostrar(i_arrayJS,r_arrayJS)" />-->
-            <table border="0" style="width: 100%;">
+            <table border="0" style="width: 100%;margin-top: 80%;">
                 <tr>
-                    <td align="center"><a id="pista" href="#"><strong>?</strong></a></td>
-                    <td align="right"><input type="button" id="siguiente" value="SIGUIENTE" onclick="mostrar(i_arrayJS,r_arrayJS)" /></td>
+                    <td align="left">
+                                      <input style="background:#FFBD21; margin-top: 5%; padding: 3%; color: white; border: 0; border-radius: 5px;" type="button" id="boton" value="ACLARAR" onclick="javascript: contador()" /></td>
+                    <td align="right"><input style="background:#AC1416; margin-top: 5%; padding: 3%; color: white; border: 0; border-radius: 5px;" type="button" id="siguiente" value="SIGUIENTE" onclick="mostrar(i_arrayJS,r_arrayJS);zoom();" /></td>
                 </tr>
             </table>
         </div>
         
+        
         <div id="pantallaFinal" class="col-xs-12 col-sm-10 col-sm-offset-1" style="display: none; width: 100%;">
             <h1><center>FIN DEL JUEGO</center> </h1>
             
-            <p>De <?php echo $M_R_S_A['num_images']; ?> fotos has acertado <span id="fotos_acertadas"> </span>
-            y has fallado <span id="fotos_falladas"> </span>.
+            <h3><center>De <?php echo $M_R_S_A['num_images']; ?> fotos has acertado <span id="fotos_acertadas"> </span>.</center></h3>
             
-            TUS PUNTOS SON <script type="text/javascript"> 
-                document.writeln(aciertos); 
-            </script> </p>
+            <h3><center>Has fallado <span id="fotos_falladas"> </span>.</center></h3>
+            
+            <h3><center>&iexcl;HAS GANADO <span id="puntos_ganados"> </span> PUNTOS!</center></h3>
             
         </div>
         <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="inputWrapper">

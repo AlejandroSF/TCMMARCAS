@@ -5,7 +5,7 @@ include("conexion.php");
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html" />
-	<meta name="author" content="www.intercambiosvirtuales.org" />
+	<meta name="author" content="piis" />
 
 	<title>Galeria imagenes</title>
 </head>
@@ -13,6 +13,26 @@ include("conexion.php");
 <body>
 <h1>Galeria de Imagenes</h1>
 <h3>El juego de las marcas</h3>
+
+<?php
+if(isset($_POST['modificar'])=="mod")
+{
+    //echo "modificamos el valor";
+    $U_NI="UPDATE administracion SET num_images=".$_POST['num_imagenes'].", tiempo_juego=".$_POST['tiem_juego']." WHERE usuario='administrador' ";
+    //echo $U_NI;
+    $R_U_NI=mysql_query($U_NI,$conexion);
+}
+
+
+$S_NI="SELECT num_images,tiempo_juego FROM administracion LIMIT 1";
+//echo $S_NI;
+$R_S_NI=mysql_query($S_NI,$conexion);
+$M_R_S_NI=mysql_fetch_array($R_S_NI);
+?>
+<form action="galeriaimagenes.php" method="post">
+<p>Nº imagenes del juego: <input type="text" name="num_imagenes" value="<?php echo $M_R_S_NI['num_images']; ?>" /> / segudos <input type="text" name="tiem_juego" value="<?php echo $M_R_S_NI['tiempo_juego']; ?>" /> <input type="submit" value="Modificar" /></p>
+<input type="hidden" name="modificar" value="mod" />
+</form>
 <?php
 if(isset($_POST['guardar'])==1)
 {

@@ -7,6 +7,7 @@ if($_POST['valorCaja1']==$_POST['valorCaja2'])
 ?>
     <script>
         aciertos = contarAciertos(aciertos);
+        $("#imageWrapper").css("-webkit-filter", "blur(0px)");
         //alert (aciertos);
     </script>
     <h3 id="acierto" ><center>&iexcl;Correcto!</center></h3>
