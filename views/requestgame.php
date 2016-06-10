@@ -13,7 +13,7 @@ if (!isset($_REQUEST['validation'])||!isset($_REQUEST['invitation'])) {
 		$r.save();
 		$reservations = GameReservation::getByConditions(array('validation' => $r->validation));
 		if (count($reservations)>0) {
-			$g = new Game($r);
+			$g = new Game($r, $reservations[0]);
 			$_SESSION['Game'] = $g;
 			include '../pages/gamepage.php';
 		}else{

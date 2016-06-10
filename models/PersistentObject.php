@@ -71,10 +71,10 @@ class PersistentObject{
         }
     }
 
-    public static function getByConditions($conditions){//función genérica para recuperar objetos verificando unas condiciones
+    public static function getByConditions($conditions, $positive=True){//función genérica para recuperar objetos verificando unas condiciones
         $s = array();
         foreach (static::getParser()->objectToStringArray($conditions) as $k => $v) {
-            array_push($s, $k."=".$v);//Agrupamos las condiciones en cadenas como "nombre_columna = valor_columna"
+            array_push($s, $k.(($positive)?("="):("!=")).$v);//Agrupamos las condiciones en cadenas como "nombre_columna = valor_columna"
         }
         $conditionsString = implode(" AND ", $s);//Los unimos con "AND", para tener algo como "Condición1 AND Condición2 AND Condición3…"
         $cursor = getResultFromQuery("SELECT * FROM ".static::getTableName()." WHERE ".$conditionsString.";");//Construimos la consulta
