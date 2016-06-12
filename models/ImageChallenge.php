@@ -1,5 +1,7 @@
 <?php
 
+include_once 'PersistentObject.php';
+
 class ImageChallenge extends PersistentObject {
 
 	public $image;

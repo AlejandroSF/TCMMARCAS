@@ -1,4 +1,7 @@
 <?php
+
+include_once 'PersistentObject.php';
+
 define('DBUser', 'API');
 define('DBPass', 'hola');
 define('DBName', 'TCMMARCAS');

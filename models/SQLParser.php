@@ -1,7 +1,5 @@
 <?php
 include_once 'PersistentObject.php';
-include_once 'GameReservation.php';
-include_once 'Settings.php';
 
 error_reporting(0);
 class SQLParser{

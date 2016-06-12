@@ -1,4 +1,7 @@
 <?php
+
+include_once '../models/PersistentObject';
+
 session_start();
 $response = array();
 $success = isset($_SESSION['Game']);

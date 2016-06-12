@@ -1,5 +1,7 @@
 <?php
 
+include_once 'PersistentObject.php';
+
 class ImageMatch extends PersistentObject{
 
 	public $playerId;

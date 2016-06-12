@@ -2,8 +2,12 @@
 include_once 'SQLParser.php';
 include_once 'Settings.php';
 
-include_once 'GameRequest.php';
+include_once 'GameRequest.php';//Incluimos todas las subclases de PersistentObject, para que se incluyan siempre que importemos este archivo
 include_once 'GameReservation.php';
+include_once 'ImageChallenge.php';
+include_once 'ImageMatch.php';
+include_once 'Player.php';
+include_once 'StoredImage.php';
 
 class PersistentObject{
 

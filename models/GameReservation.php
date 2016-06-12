@@ -1,4 +1,5 @@
 <?php
+
 include_once 'PersistentObject.php';
 
 class GameReservation extends PersistentObject{
