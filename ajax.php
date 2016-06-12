@@ -1,6 +1,7 @@
 <?php 
 //$resultado = $_POST['valorCaja1'] + $_POST['valorCaja2'];
 //echo "CAJA1: ".$_POST['valorCaja1'] ." CAJA2: ".$_POST['valorCaja2'] ;
+// LINEA DE PRUEBA
 $contador=0;
 if($_POST['valorCaja1']==$_POST['valorCaja2'])
 {
