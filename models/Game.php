@@ -23,18 +23,27 @@ class Game extends PersistentObject {
 		$this->promotion = $request->promotion;
 		$this->token = $reservation->token;
 
+		$player = Player::getByConditions(array('token'=>$this->token));
+		if (count($player)==0) {
+			$this->player = new Player($this->token);
+		}else{
+			$this->player = $player[0];
+		}
+
 		$this->activeChallenge = $this->getNewChallenge();
 	}
 
-	public function getFields(){
-		$fields = parent::getFields();
-		unset($fields['activeChallenge']);
+	public function getFields($excludeAuxiliaryFields = True){
+		$fields = parent::getFields($excludeAuxiliaryFields);
+		if ($excludeAuxiliaryFields) {
+			unset($fields['activeChallenge']);
+		}
 		return $fields;
 	}
 
 	public function checkSolution($solution=''){
 		if ($this->activeChallenge->checkSolution($solution)) {
-			$this->getNewChallenge()
+			$this->getNewChallenge();
 			return True;
 		}else{
 			return False;
