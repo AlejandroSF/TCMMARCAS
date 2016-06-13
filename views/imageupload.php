@@ -17,7 +17,7 @@ if ($success) {
     		$destinationPath = ImageFolder."/".getValidFileName();
     			if ((@move_uploaded_file($_FILES["imagen"]["tmp_name"], $destinationPath))!=False){
                     $response['uploaded'] = True;
-                    (new StoredImage($destinationPath)).save();
+                    (new StoredImage($destinationPath, $_POST['solution'])).save();
                     $response['message'] = "Imagen subida y guardada correctamente";
     			} else {
     				$response['message'] = "Error en el guardado de la Imagen";
