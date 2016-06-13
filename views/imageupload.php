@@ -25,7 +25,7 @@ if (True) {
     				$response['message'] = "Error en el guardado de la Imagen";
     			}
     	} else {
-    		$response['message'] = "El tipo o tamaño del archivo no es adecuado";
+    		$response['message'] = (!in_array($_FILES['imagen']['type'], AllowedFileTypes))?("Tipo de archivo no permitido"):("Tamaño de archivo excesivo");
     	}
     }
 
