@@ -9,8 +9,10 @@ define('DBAddress', 'localhost');
 
 define('MaxFileSizeKb', 1000000000);
 define('ImageFolder', 'images');
-define('AllowedFileTypes', array("image/jpeg","image/png"););
+define('AllowedFileTypes', array("image/jpeg","image/png"));
 
+define('AdminUserName', 'Admin');
+define('AdminPassword', 'Admin');
 
 
 
