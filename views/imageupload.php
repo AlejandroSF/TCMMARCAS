@@ -1,6 +1,6 @@
 <?php
 
-include_once '../models/PersistentObject';
+include_once '../models/StoredImage.php';
 
 session_start();
 $response = array();
