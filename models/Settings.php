@@ -7,6 +7,13 @@ define('DBPass', 'hola');
 define('DBName', 'TCMMARCAS');
 define('DBAddress', 'localhost');
 
+define('MaxFileSizeKb', 1000000000);
+define('ImageFolder', 'images');
+define('AllowedFileTypes', array("image/jpeg","image/png"););
+
+
+
+
 function DBConnect() {
     $con = mysqli_connect(DBAddress,DBUser,DBPass,DBName);//Dirección, Usuario, Contraseña y Nombre de la BD
     if (mysqli_connect_errno()) {
